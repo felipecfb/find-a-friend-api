@@ -6,3 +6,43 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Age {
+  BABY
+  YOUNG
+  ADULT
+  SENIOR
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+enum EnergyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum IndependenceLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Organization {
+  id                String   @id @default(cuid())
+  contactPersonName String // Name of the person responsible for the organization
+  email             String   @unique
+  zip               String
+  address           String
+  phone             String // Whatsapp number for responsible person for the organization
+  password          String
+  passwordConfirm   String
+  createdAt         DateTime @default(now())
+
+  @@map("organizations")
+}
