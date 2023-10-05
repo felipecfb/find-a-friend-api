@@ -6,6 +6,28 @@ import { OrganizationsRepository } from '../organizations-repository'
 export class InMemoryOrganizationsRepository
   implements OrganizationsRepository
 {
+  async findOrganizationById(id: string): Promise<{
+    id: string
+    contactPersonName: string
+    email: string
+    zip: string
+    address: string
+    phone: string
+    password: string
+    passwordConfirm: string
+    createdAt: Date
+  } | null> {
+    const organization = this.organizations.find(
+      (organization) => organization.id === id,
+    )
+
+    if (!organization) {
+      return null
+    }
+
+    return organization
+  }
+
   async findOrganizationByEmail(email: string): Promise<Organization | null> {
     const organization = this.organizations.find(
       (organization) => organization.email === email,
