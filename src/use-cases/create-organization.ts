@@ -1,5 +1,6 @@
 import { OrganizationsRepository } from '@/repositories/organizations-repository'
 import { Organization } from '@prisma/client'
+import { OrganizationAlreadyExistsError } from './errors/organization-already-exists-error'
 
 interface CreateOrganizationUseCaseRequest {
   contactPersonName: string
@@ -27,6 +28,13 @@ export class CreateOrganizationUseCase {
     password,
     passwordConfirm,
   }: CreateOrganizationUseCaseRequest): Promise<CreateOrganizationUseCaseResponse> {
+    const organizationWithSameEmail =
+      await this.organizationRepository.findOrganizationByEmail(email)
+
+    if (organizationWithSameEmail) {
+      throw new OrganizationAlreadyExistsError()
+    }
+
     const organization = await this.organizationRepository.create({
       contactPersonName,
       email,

@@ -24,8 +24,32 @@ describe('Create Organization Use Case', () => {
       passwordConfirm: '123456',
     })
 
-    console.log(organization)
-
     expect(organization.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to create a new organization with same email', async () => {
+    const email = 'johndoe@example.com'
+
+    await sut.execute({
+      contactPersonName: 'John Doe',
+      email,
+      zip: '12345',
+      address: 'Address Example',
+      phone: '123456789',
+      password: '123456',
+      passwordConfirm: '123456',
+    })
+
+    await expect(() =>
+      sut.execute({
+        contactPersonName: 'John Doe',
+        email,
+        zip: '12345',
+        address: 'Address Example',
+        phone: '123456789',
+        password: '123456',
+        passwordConfirm: '123456',
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
