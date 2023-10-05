@@ -42,7 +42,23 @@ model Organization {
   phone             String // Whatsapp number for responsible person for the organization
   password          String
   passwordConfirm   String
+  Pets              Pet[]
   createdAt         DateTime @default(now())
 
   @@map("organizations")
+}
+
+model Pet {
+  id                String            @id @default(cuid())
+  name              String
+  description       String
+  age               Age
+  size              Size
+  energyLevel       EnergyLevel
+  independenceLevel IndependenceLevel
+  createdAt         DateTime          @default(now())
+  Organization      Organization?     @relation(fields: [organizationId], references: [id])
+  organizationId    String?
+
+  @@map("pets")
 }
